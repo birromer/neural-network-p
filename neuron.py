@@ -12,7 +12,11 @@ class Neuron:
         output = 0
         for i in len(inputs):
             sum += input[i] * weight[i]
-        return output # + bias
+        return output # + self.bias
 
     def activate(inputs):
         return sigmoid(output(inputs))
+
+    def updateWeights(learningRate, dEdy):
+        for i in len(self.weights):
+            weights[i] += learningRate * weight[i] * (target -
