@@ -1,4 +1,4 @@
-from math import exp
+from neuron import *
 
 class DenseLayer:
     def __init__(self, num_of_inputs, num_of_neurons, base_weight):
