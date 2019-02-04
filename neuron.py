@@ -5,18 +5,26 @@ class Neuron:
         self.weights = weights
         # self.bias = bias
 
-    def sigmoid(input):
+    def z(self, input): #sigmoid function
         return (1 / 1 + exp(-input))
 
-    def output(inputs):
+    def y(self, inputs): #output
         output = 0
-        for i in len(inputs):
-            sum += input[i] * weight[i]
+        for i in range(len(inputs)):
+            output += (inputs[i] * self.weights[i])
         return output # + self.bias
 
-    def activate(inputs):
+    def activationFunction(self, inputs):
         return sigmoid(output(inputs))
 
-    def updateWeights(learningRate, dEdy):
-        for i in len(self.weights):
-            weights[i] += learningRate * weight[i] * (target -
+#    def updateWeights(learningRate, dEdy):
+#        for i in len(self.weights):
+#            weights[i] += learningRate * weight[i] * (target)
+
+
+if __name__ == "__main__":
+    inputs = [2, 5, 3]
+
+    neuron = Neuron([150, 50, 100], 0)
+
+    print(neuron.output(inputs))
