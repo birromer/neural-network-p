@@ -27,4 +27,4 @@ if __name__ == "__main__":
 
     neuron = Neuron([150, 50, 100], 0)
 
-    print(neuron.output(inputs))
+    print(neuron.y(inputs))
