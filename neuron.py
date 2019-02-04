@@ -14,7 +14,7 @@ class Neuron:
             output += (inputs[i] * self.weights[i])
         return output # + self.bias
 
-    def activationFunction(self, inputs):
+    def activation_function(self, inputs):
         return sigmoid(output(inputs))
 
 #    def updateWeights(learningRate, dEdy):
