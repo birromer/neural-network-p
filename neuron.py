@@ -22,3 +22,10 @@ class Neuron:
 #    def updateWeights(learningRate, dEdy):
 #        for i in len(self.weights):
 #            weights[i] += learningRate * weight[i] * (target)
+
+if __name__ == "__main__":
+    inputs = [2, 5, 3]
+
+    neuron = Neuron([150, 50, 100])
+
+    print(neuron.z(inputs))
