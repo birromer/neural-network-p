@@ -1,10 +1,11 @@
 from math import exp
-
+    
 class Neuron:
     def __init__(self, weights, bias=0): # add bias later
         self.weights = weights
         self.bias = bias
         self.dEdz = 0
+        self.output = 0
 
     def activation_function(self, input): # sigmoid function
         return 1.0 / (1.0 + exp(-(input)))
@@ -16,15 +17,17 @@ class Neuron:
         return output # + self.bias
 
     def y(self, inputs):
-        return self.activation_function(self.z(inputs))
+        self.output = self.activation_function(self.z(inputs))
+        return self.output
     
-    def compute_dEdz(self, inputs, dEdy): # dEdy is a gradient
-        y = self.y(inputs)
+    def compute_dEdz(self, dEdy): 
+        y = self.output
         self.dEdz =  (y * (1 - y) * dEdy)
+        return self.dEdz
     
-    def update_weights(self, learningRate):
+    def update_weights(self, learningRate, dEdw):
         for i in range(len(self.weights)):
-            self.weights[i] += learningRate * self.weights[i] * self.dEdz
+            self.weights[i] -= learningRate * dEdw
 
 if __name__ == "__main__":
     inputs = [2, 5, 3]
