@@ -4,7 +4,7 @@ from random import uniform
 def gen_rand_weights(size_vec):
     weights = []
     for _ in range(size_vec):
-        weights.append(uniform(0,0.5))
+        weights.append(uniform(0,1))
     return weights
 
 class DenseLayer:
@@ -20,12 +20,7 @@ class DenseLayer:
         output = []
         for neuron in self.neurons:
             output.append(neuron.y(inputs))
-            #print(neuron.activation_function(inputs))
         return output
-    
-    def update_weights(self, learning_rate):
-        for neuron in self.neurons:
-            neuron.update_weights(learning_rate)
 
 if __name__ == "__main__":
     pass
