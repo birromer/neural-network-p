@@ -1,14 +1,14 @@
 from denseLayer import *
 
 class NeuralNetwork:
-    def __init__(self, num_of_inputs, neurons_at_layer_1, neurons_at_layer_2):
+    def __init__(self, num_of_inputs, layers):
         self. num_of_inputs = num_of_inputs
-        layer_1 = DenseLayer(num_of_inputs, neurons_at_layer_1)
-        layer_2 = DenseLayer(neurons_at_layer_1, neurons_at_layer_2)
-        
-        self.layers = [layer_1, layer_2]
-        
-    def error_function(self, y, target):
+        self.layers = [DenseLayer(num_of_inputs, layers[0])]
+        for i in range(1,len(layers)):
+            added_layer = DenseLayer(layers[i-1], layers[i])
+            self.layers.append(added_layer)
+                    
+    def error_function(self, y, target):        
         t = [0 for _ in range(10)]
         t[target] = 1
         sum = 0
@@ -41,21 +41,29 @@ class NeuralNetwork:
         ohe[x] = 1
         return ohe
     
-    def encoding_to_number(vec):
+    def ohe_to_num(self, vec):
         return vec.index(max(vec))
     
 
     def backpropagation(self, inputs, labels, output, learning_rate):
         dEdy = network.derivative_error_function(output, label)
+                
+        for i in range(len(self.layers)-1, 0, -1):
+            for j in range(len(self.layers[i].neurons)):
+                dEdz = self.layers[i].neurons[j].compute_dEdz(dEdy[j]) # CADA DIMENSAO É PARA UM NEURONIOOOOO
+                for k in range(len(self.layers[i-1].neurons)):
+                    dEdw = self.layers[i-1].neurons[k].output * dEdz
+                    weights = self.layers[i-1].neurons[k].weights
+                    previous_layer_dEdy = [weight * dEdz for weight in weights]            
+                    self.layers[i].neurons[j].update_weights(learning_rate, dEdw)
         
-        for i in range(len(network.layers)-1, -1, -1):
-            for j in range(len(network.layers[i].neurons)):
-                network.layers[i].neurons[j].compute_dEdz(sample, dEdy)
+        dEdy = previous_layer_dEdy.copy()
         
-        for i in range(len(network.layers)):
-            network.layers[i].update_weights(0.001)
-
-
+        for j in range(len(network.layers[0].neurons)):
+            dEdz = self.layers[0].neurons[j].compute_dEdz(dEdy[j])
+            for k in range(len(self.layers[0].neurons[j].weights)):
+                dEdw = inputs[k] * dEdz
+                self.layers[0].neurons[j].update_weights(learning_rate, dEdw)
 if __name__ == "__main__":
     pass
 
