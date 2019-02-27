@@ -8,6 +8,7 @@ class Neuron:
         self.output = 0
 
     def activation_function(self, input): # sigmoid function
+        #print("input ",input)
         return 1.0 / (1.0 + exp(-(input)))
 
     def z(self, inputs): # output
@@ -28,6 +29,9 @@ class Neuron:
     def update_weights(self, learningRate, dEdw):
         for i in range(len(self.weights)):
             self.weights[i] -= learningRate * dEdw
+            
+    def update_bias(self, learning_rate, dEdz):
+        self.bias -= learning_rate * dEdz
 
 if __name__ == "__main__":
     inputs = [2, 5, 3]
