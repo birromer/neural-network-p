@@ -70,9 +70,7 @@ class NeuralNetwork:
                 self.layers[0].neurons[j].update_weights(learning_rate, dEdw)
 
 if __name__ == "__main__":
-    import matplotlib.pyplot as plt
     import tensorflow as tf
-    import numpy as np
 
     mnist = tf.keras.datasets.mnist
 
