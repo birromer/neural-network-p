@@ -53,10 +53,10 @@ class NeuralNetwork:
         for i in range(len(self.layers)-1, 0, -1):
             for j in range(len(self.layers[i].neurons)):
                 dEdz = self.layers[i].neurons[j].compute_dEdz(dEdy[j]) # CADA DIMENSAO É PARA UM NEURONIOOOOO
-                previous_layer_dEdy = [0 for _ in range(len(self.layers[i].neurons.weights))]
-                for k in range(len(self.layers[i].neurons.weights)):
-                    dEdw = self.layers[i-1].neurons[k].output * dEdz
-                    previous_layer_dEdy[k] += dEdw * self.layers[i].neurons.weights[k]
+                previous_layer_dEdy = [0 for _ in range(len(self.layers[i].neurons[j].weights))]
+                for k in range(len(self.layers[i].neurons[j].weights)):
+                    dEdw = self.layers[i-1].neurons[j].output * dEdz
+                    previous_layer_dEdy[k] += dEdw * self.layers[i].neurons[j].weights[k]
                     self.layers[i].neurons[j].update_weights(learning_rate, dEdw)
                     self.layers[i].neurons[j].update_bias(learning_rate, dEdz)
 
