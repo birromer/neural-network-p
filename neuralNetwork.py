@@ -67,6 +67,7 @@ class NeuralNetwork:
             for k in range(len(self.layers[0].neurons[j].weights)):
                 dEdw = inputs[k] * dEdz
                 self.layers[0].neurons[j].update_weights(learning_rate, dEdw)
+            
 
 if __name__ == "__main__":
     import tensorflow as tf
