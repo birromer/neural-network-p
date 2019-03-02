@@ -87,27 +87,40 @@ if __name__ == "__main__":
     hits = 0
     previous_loss = 0
 
-    for s in range(1,len(samples)):
-        sample = samples[s].flatten()
-        label = labels[s]
+for p in range(10):
+        for s in range(1,len(samples)):
+            sample = samples[s].flatten()
+            label = labels[s]
 
-        output = network.feed_forward(sample)
-        loss = network.error_function(output, label)
-        loss_diff = loss - previous_loss
-        previous_loss = loss
+            output = network.feed_forward(sample)
+            loss = network.error_function(output, label)
+            loss_diff = loss - previous_loss
+            previous_loss = loss
 
-        output_value = network.ohe_to_num(output)
+            output_value = network.ohe_to_num(output)
 
-        if output_value == label:
-            hits+=1
-        hit_rate = hits/s * 100
+            if output_value == label:
+                hits+=1
+            hit_rate = hits/s * 100
 
-        print("Sample %d, label = %d, output = %d" % (s, label, output_value))
+            print("Sample %d, label = %d, output = %d" % (s, label, output_value))
 
-        print("Current loss = %.10f, %.2f%% hit rate." %  (loss, hit_rate))
+            print("Current loss = %.10f, %.2f%% hit rate." %  (loss, hit_rate))
 
-        print("Difference from previous loss = ", loss_diff)
+            print("Difference from previous loss = ", loss_diff)
 
-        print(output)
+            print(output)
 
-        network.backpropagation(sample, label, output, 0.1)
+            if s % 5000 == 0:
+                valids = 0
+                for v in range(len(x_test)):
+                    o = network.feed_forward(x_test[v].flatten())
+                    o = network.ohe_to_num(o)
+                    if o == y_test[v]:
+                        valids += 1
+                hr = valids / len(y_test) * 100
+                print("--------------- %d samples analyzed, %f%% hit rate" % (s, hr))
+            #    input("press anything to continue")
+
+            network.backpropagation(sample, label, output, 0.1)
+        input("press anything to continue")
