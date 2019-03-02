@@ -1,5 +1,5 @@
 from math import exp
-
+import numpy as np
 class Neuron:
     def __init__(self, weights, bias=0): # add bias later
         self.weights = weights

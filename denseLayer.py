@@ -1,6 +1,6 @@
 from neuron import *
 from random import uniform
-
+import numpy as np
 class DenseLayer:
     def __init__(self, num_of_inputs, num_of_neurons):
         self.neurons = []
