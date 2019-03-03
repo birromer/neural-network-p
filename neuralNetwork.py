@@ -7,8 +7,8 @@ class NeuralNetwork:
         for i in range(1,len(layers)):
             added_layer = DenseLayer(layers[i-1], layers[i])
             self.layers.append(added_layer)
-
-    def error_function(self, y, target):
+                    
+    def error_function(self, y, target):        
         t = [0 for _ in range(10)]
         t[target] = 1
         sum = 0
@@ -16,7 +16,7 @@ class NeuralNetwork:
             diff = t[i] - y[i]
             sum += (diff**2)
         return sum
-
+        
     def derivative_error_function(self, y, target):
         t = [0 for _ in range(10)]
         t[target] = 1
@@ -26,10 +26,10 @@ class NeuralNetwork:
             partial_d = -1 * (t[i] - y[i])
             error_gradient.append(partial_d)
         return error_gradient
-
+        
     def feed_forward(self, inputs):
         outputs = [[] for _ in range(len(self.layers))]
-
+        
         for i in range(len(self.layers)):
             for neuron in self.layers[i].neurons:
                 if i != 0:
@@ -37,36 +37,36 @@ class NeuralNetwork:
                 else:
                     outputs[i] = np.append(outputs[i], neuron.y(inputs))
         return np.array(outputs[-1])
-
+    
     def one_hot_encoding(x):
         ohe = [0 for _ in range(x)]
         ohe[x] = 1
         return ohe
-
+    
     def ohe_to_num(self, vec):
         return vec.argmax(axis=0)
-
+    
     def backpropagation(self, inputs, labels, output, learning_rate):
         dEdy = network.derivative_error_function(output, label)
-
+            
         for i in range(len(self.layers)-1, 0, -1):
             for j in range(len(self.layers[i].neurons)):
                 dEdz = self.layers[i].neurons[j].compute_dEdz(dEdy[j]) # CADA DIMENSAO É PARA UM NEURONIOOOOO
-                previous_layer_dEdy = [0 for _ in range(len(self.layers[i].neurons[j].weights))]
+                previous_layer_dEdy = np.zeros(len(self.layers[i].neurons[j].weights))
                 for k in range(len(self.layers[i].neurons[j].weights)):
                     dEdw = self.layers[i-1].neurons[k].output * dEdz
-                    previous_layer_dEdy[k] += dEdw * self.layers[i].neurons[j].weights[k]
+                    previous_layer_dEdy[k] += dEdz * self.layers[i].neurons[j].weights[k]
                     self.layers[i].neurons[j].update_weights(learning_rate, dEdw)
-                    self.layers[i].neurons[j].update_bias(learning_rate, dEdz)
-
-            if len(self.layers) > 1:
-                dEdy = previous_layer_dEdy.copy()
-
+                self.layers[i].neurons[j].update_bias(learning_rate, dEdz)
+            dEdy = np.copy(previous_layer_dEdy)
+        
         for j in range(len(network.layers[0].neurons)):
             dEdz = self.layers[0].neurons[j].compute_dEdz(dEdy[j])
             for k in range(len(self.layers[0].neurons[j].weights)):
                 dEdw = inputs[k] * dEdz
                 self.layers[0].neurons[j].update_weights(learning_rate, dEdw)
+            self.layers[i].neurons[j].update_bias(learning_rate, dEdz)
+
 
 
 if __name__ == "__main__":
@@ -111,7 +111,7 @@ for p in range(10):
 
             print(output)
 
-            if s % 5000 == 0:
+            if s % 4999 == 0 or s % 59999 == 0:
                 valids = 0
                 for v in range(len(x_test)):
                     o = network.feed_forward(x_test[v].flatten())
@@ -122,5 +122,5 @@ for p in range(10):
                 print("--------------- %d samples analyzed, %f%% hit rate" % (s, hr))
             #    input("press anything to continue")
 
-            network.backpropagation(sample, label, output, 0.1)
+            network.backpropagation(sample, label, output, 0.001)
         input("press anything to continue")
