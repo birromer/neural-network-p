@@ -111,7 +111,7 @@ for p in range(10):
 
             print(output)
 
-            if s % 4999 == 0 or s % 59999 == 0:
+            if s % 5000 == 0 or s % 59999 == 0:
                 valids = 0
                 for v in range(len(x_test)):
                     o = network.feed_forward(x_test[v].flatten())
